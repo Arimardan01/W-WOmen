@@ -1,7 +1,7 @@
 var express = require("express")
 var bodyParser = require("body-parser")
 var mongoose = require("mongoose")
-const url= 'mongodb+srv://arimardan2003:Rparihar01@cluster0.mfz5asa.mongodb.net/mydatabase?retryWrites=true&w=majority'
+const uri= 'mongodb+srv://arimardan2003:Rparihar01@cluster0.mfz5asa.mongodb.net/mydatabase?retryWrites=true&w=majority'
 const app = express()
 
 app.use(bodyParser.json())
@@ -13,9 +13,13 @@ app.use(bodyParser.urlencoded({
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(url);
+    
+  await mongoose.connect(uri, {useNewUrlParser: true});
   console.log("db connected")
 }
+
+
+
 
 app.get('/login', (req, res) => {
     res.render('login')
@@ -53,7 +57,7 @@ app.post("/signup",async (req,res)=>{
         "password":pass,
         "phone":phone
     }
-    console.log(data);
+    // console.log(data);
     const new_user = new user(data);
     await new_user.save();
     return res.redirect('index2.html')
